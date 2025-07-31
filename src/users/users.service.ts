@@ -2,14 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../common/database/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { EventEmitter2 } from '@nestjs/event-emitter';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 import * as crypto from 'crypto';
 
 @Injectable()
 export class UsersService {
   constructor(
     private prisma: PrismaService,
-    private eventEmitter: EventEmitter2,
+    @InjectQueue('emails') private emailsQueue: Queue,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -27,7 +28,7 @@ export class UsersService {
       },
     });
 
-    this.eventEmitter.emit('user.created', {
+    await this.emailsQueue.add('send-confirmation-email', {
       email: user.email,
       name: user.name,
       token: user.emailVerificationToken,
