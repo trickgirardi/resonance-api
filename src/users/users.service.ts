@@ -2,15 +2,26 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../common/database/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private eventEmitter: EventEmitter2,
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
-    return this.prisma.user.create({
+    const user = await this.prisma.user.create({
       data: createUserDto,
     });
+
+    this.eventEmitter.emit('user.created', {
+      email: user.email,
+      name: user.name,
+    });
+
+    return user;
   }
 
   async findAll() {
