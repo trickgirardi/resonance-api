@@ -6,6 +6,10 @@ export class UserEntity implements User {
   email: string;
   password: string;
 
+  emailVerified: boolean;
+  emailVerificationToken: string;
+  emailVerificationTokenExpiresAt: Date;
+
   createdAt: Date;
   updatedAt: Date;
 }
