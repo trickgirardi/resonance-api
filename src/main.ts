@@ -11,7 +11,12 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
   await app.listen(process.env.PORT ?? 3001, '0.0.0.0');
 }
 bootstrap();
