@@ -6,7 +6,7 @@ import {
 } from '@prisma/client';
 
 export class ContactEntity implements Contact {
-  id: number;
+  id: string;
   name: string;
   gender: Gender;
   birthDay: number;
@@ -18,7 +18,7 @@ export class ContactEntity implements Contact {
   lastInteraction: Date;
   notes: string;
 
-  userId: number;
+  userId: string;
 
   createdAt: Date;
   updatedAt: Date;
