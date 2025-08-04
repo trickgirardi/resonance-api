@@ -12,10 +12,14 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { BullBoardInstance, InjectBullBoard } from '@bull-board/nestjs';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    @InjectBullBoard() private readonly boardInstance: BullBoardInstance,
+  ) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
