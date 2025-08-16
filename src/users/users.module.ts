@@ -6,6 +6,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { BullBoardModule } from '@bull-board/nestjs';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 import { EmailProcessor } from './processors/email.processor';
+import { NotificationEmailProcessor } from './processors/notification-email.processor';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { EmailProcessor } from './processors/email.processor';
     }),
   ],
   controllers: [UsersController],
-  providers: [UsersService, EmailProcessor],
-  exports: [BullModule],
+  providers: [UsersService, EmailProcessor, NotificationEmailProcessor],
+  exports: [BullModule, UsersService],
 })
 export class UsersModule {}

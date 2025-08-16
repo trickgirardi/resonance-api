@@ -9,6 +9,8 @@ import { BullBoardModule } from '@bull-board/nestjs';
 import { FastifyAdapter } from '@bull-board/fastify';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { NotificationsModule } from './notifications/notifications.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -48,6 +50,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
       route: '/queues',
       adapter: FastifyAdapter,
     }),
+    NotificationsModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],
